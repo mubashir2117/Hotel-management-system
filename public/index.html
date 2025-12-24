@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Royal Palace Hotel - Luxury Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background: #0a0a0a; color: #fff; overflow-x: hidden; }
+        
+        /* --- Navigation --- */
+        nav { position: fixed; top: 0; width: 100%; padding: 20px 100px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(201, 169, 97, 0.2); }
+        .logo { font-family: 'Playfair Display', serif; font-size: 1.8em; font-weight: 700; color: #c9a961; letter-spacing: 2px; }
+        .nav-links { display: flex; gap: 40px; }
+        .nav-links a { color: #fff; text-decoration: none; font-weight: 500; transition: color 0.3s; cursor: pointer; font-size: 0.9em; text-transform: uppercase; letter-spacing: 1px; }
+        .nav-links a:hover { color: #c9a961; }
+
+        /* --- Hero --- */
+        .hero { height: 60vh; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=1920') center/cover; display: flex; align-items: center; justify-content: center; text-align: center; }
+        .hero-content h1 { font-family: 'Playfair Display', serif; font-size: 4em; color: #c9a961; margin-bottom: 10px; }
+        
+        /* --- Layout --- */
+        .booking-section { padding: 60px 5%; background: #0f0f0f; }
+        .booking-container { display: grid; grid-template-columns: 400px 1fr; gap: 40px; max-width: 1400px; margin: 0 auto; }
+        
+        /* --- Form --- */
+        .booking-form { background: #1a1a1a; padding: 35px; border: 1px solid rgba(201, 169, 97, 0.3); border-radius: 4px; height: fit-content; }
+        .booking-form h3 { font-family: 'Playfair Display', serif; font-size: 1.8em; margin-bottom: 25px; color: #c9a961; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; color: #c9a961; font-size: 0.8em; text-transform: uppercase; letter-spacing: 1px; }
+        .form-group input, .form-group select { width: 100%; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(201, 169, 97, 0.2); color: #fff; border-radius: 3px; }
+        
+        /* --- Buttons --- */
+        .btn-primary { width: 100%; padding: 15px; background: #c9a961; color: #000; border: none; font-weight: 600; cursor: pointer; text-transform: uppercase; margin-bottom: 10px; transition: 0.3s; }
+        .btn-primary:hover { background: #fff; }
+        .btn-secondary { width: 100%; padding: 12px; background: transparent; color: #c9a961; border: 1px solid #c9a961; cursor: pointer; text-transform: uppercase; font-size: 0.85em; margin-bottom: 8px; transition: 0.3s; }
+        .btn-secondary:hover { background: rgba(201, 169, 97, 0.1); }
+
+        /* --- Tabs & Grid --- */
+        .tabs { display: flex; gap: 20px; margin-bottom: 30px; border-bottom: 1px solid #333; }
+        .tab { padding: 10px 20px; background: transparent; border: none; color: #777; cursor: pointer; font-weight: 500; }
+        .tab.active { color: #c9a961; border-bottom: 2px solid #c9a961; }
+        
+        .rooms-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
+        .room-card { background: #1a1a1a; border: 1px solid rgba(255,255,255,0.05); transition: 0.3s; }
+        .room-card:hover { border-color: #c9a961; transform: translateY(-5px); }
+        .room-image { height: 160px; background-size: cover; background-position: center; position: relative; }
+        .room-status-badge { position: absolute; top: 10px; right: 10px; padding: 4px 10px; font-size: 0.7em; font-weight: 700; background: rgba(0,0,0,0.8); border: 1px solid #c9a961; }
+        .room-content { padding: 20px; }
+        .room-number { font-family: 'Playfair Display', serif; font-size: 1.5em; color: #c9a961; }
+        .room-meta { font-size: 0.85em; color: #aaa; margin: 5px 0; }
+        .room-guest { margin-top: 10px; padding-top: 10px; border-top: 1px solid #333; font-size: 0.9em; color: #c9a961; }
+
+        .status-alert { padding: 12px; margin-bottom: 20px; border-radius: 3px; font-size: 0.9em; display: none; }
+        .success { background: rgba(76, 175, 80, 0.2); color: #4caf50; border: 1px solid #4caf50; }
+        .error { background: rgba(244, 67, 54, 0.2); color: #f44336; border: 1px solid #f44336; }
+
+        footer { padding: 40px; text-align: center; color: #555; font-size: 0.8em; border-top: 1px solid #222; }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">THE ROYAL PALACE</div>
+        <div class="nav-links">
+            <a onclick="location.reload()">Refresh Dashboard</a>
+            <a href="#rooms">Room View</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Executive Suite Panel</h1>
+            <p>Managing 8 Premium Operational Units</p>
+        </div>
+    </section>
+
+    <section class="booking-section">
+        <div class="booking-container">
+            <div class="booking-form">
+                <h3>Front Desk</h3>
+                <div id="statusAlert" class="status-alert"></div>
+                <div class="form-group">
+                    <label>Room ID (101-108)</label>
+                    <input type="number" id="roomNo" placeholder="Enter Room No.">
+                </div>
+                <div class="form-group">
+                    <label>Guest Full Name</label>
+                    <input type="text" id="guestName" placeholder="Name for booking/search">
+                </div>
+                <button class="btn-primary" onclick="bookRoom()">Confirm Booking</button>
+                <button class="btn-secondary" onclick="checkoutRoom()">Process Checkout</button>
+                <button class="btn-secondary" onclick="searchRoom()">Search Database</button>
+                <button class="btn-secondary" onclick="addToWaitingList()">Add to Queue</button>
+            </div>
+
+            <div class="rooms-display" id="rooms">
+                <div class="tabs">
+                    <button class="tab active" onclick="showTab(event, 'all')">Active Inventory</button>
+                    <button class="tab" onclick="showTab(event, 'history')">Recent Logs</button>
+                    <button class="tab" onclick="showTab(event, 'waiting')">Waiting Queue</button>
+                </div>
+                <div id="displayArea"></div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>THE ROYAL PALACE &copy; 2024 | SECURE MANAGEMENT CONSOLE</p>
+    </footer>
+
+    <script>
+        // --- DATA STRUCTURE: Exactly 8 Rooms ---
+        let rooms = [
+            { id: 101, type: 'Deluxe Single', price: 1000, status: 'Available', guest: '', img: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=400' },
+            { id: 102, type: 'Deluxe Single', price: 1000, status: 'Available', guest: '', img: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=400' },
+            { id: 103, type: 'Executive Double', price: 2000, status: 'Available', guest: '', img: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?w=400' },
+            { id: 104, type: 'Executive Double', price: 2000, status: 'Available', guest: '', img: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?w=400' },
+            { id: 105, type: 'Royal Suite', price: 5000, status: 'Available', guest: '', img: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=400' },
+            { id: 106, type: 'Royal Suite', price: 5000, status: 'Available', guest: '', img: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=400' },
+            { id: 107, type: 'Presidential', price: 8000, status: 'Available', guest: '', img: 'https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=400' },
+            { id: 108, type: 'Presidential', price: 8000, status: 'Available', guest: '', img: 'https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=400' }
+        ];
+
+        let history = [];
+        let waitingList = [];
+
+        function showStatus(msg, isSuccess) {
+            const alert = document.getElementById('statusAlert');
+            alert.textContent = msg;
+            alert.style.display = 'block';
+            alert.className = 'status-alert ' + (isSuccess ? 'success' : 'error');
+            setTimeout(() => { alert.style.display = 'none'; }, 4000);
+        }
+
+        // --- DSA LOGIC ---
+        function bookRoom() {
+            const roomNo = parseInt(document.getElementById('roomNo').value);
+            const name = document.getElementById('guestName').value;
+            let room = rooms.find(r => r.id === roomNo);
+
+            if (!room) return showStatus("Room " + roomNo + " does not exist (Range 101-108)", false);
+            if (room.status === 'Booked') return showStatus("This room is already occupied", false);
+            if (!name) return showStatus("Guest name is required", false);
+
+            room.status = 'Booked';
+            room.guest = name;
+            history.unshift({ roomNo, name, time: new Date().toLocaleTimeString() });
+            showStatus(`Room ${roomNo} successfully booked for ${name}`, true);
+            showTab(null, 'all');
+        }
+
+        function checkoutRoom() {
+            const roomNo = parseInt(document.getElementById('roomNo').value);
+            let room = rooms.find(r => r.id === roomNo);
+
+            if (!room || room.status === 'Available') return showStatus("Room is not currently occupied", false);
+
+            room.status = 'Available';
+            room.guest = '';
+            showStatus(`Room ${roomNo} has been cleared.`, true);
+            showTab(null, 'all');
+        }
+
+        function searchRoom() {
+            const roomNo = parseInt(document.getElementById('roomNo').value);
+            const guestName = document.getElementById('guestName').value.toLowerCase();
+            
+            // Search by number OR by guest name
+            let room = rooms.find(r => r.id === roomNo || (r.guest && r.guest.toLowerCase().includes(guestName)));
+            
+            if (room) {
+                showStatus(`Found: Room ${room.id} is ${room.status} ${room.guest ? 'by ' + room.guest : ''}`, true);
+            } else {
+                showStatus("No matching records found", false);
+            }
+        }
+
+        function addToWaitingList() {
+            const name = document.getElementById('guestName').value;
+            if (!name) return showStatus("Enter guest name to join queue", false);
+            waitingList.push({ name, time: new Date().toLocaleTimeString() });
+            showStatus(`${name} added to waiting list`, true);
+        }
+
+        function showTab(event, tab) {
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            if(event) event.target.classList.add('active');
+            else tabs[0].classList.add('active');
+
+            const area = document.getElementById('displayArea');
+            area.innerHTML = '';
+
+            if (tab === 'all') {
+                let html = '<div class="rooms-grid">';
+                rooms.forEach(r => {
+                    html += `
+                        <div class="room-card">
+                            <div class="room-image" style="background-image: url('${r.img}')">
+                                <span class="room-status-badge" style="color: ${r.status === 'Available' ? '#4caf50' : '#f44336'}">${r.status}</span>
+                            </div>
+                            <div class="room-content">
+                                <div class="room-number">Unit ${r.id}</div>
+                                <div class="room-meta">${r.type} • ₹${r.price}</div>
+                                ${r.guest ? `<div class="room-guest">👤 ${r.guest}</div>` : '<div class="room-guest" style="color:#555">Vacant</div>'}
+                            </div>
+                        </div>`;
+                });
+                area.innerHTML = html + '</div>';
+            } else if (tab === 'history') {
+                if (history.length === 0) area.innerHTML = '<p style="color:#555">No recent activities log.</p>';
+                history.forEach(h => {
+                    area.innerHTML += `<div class="history-item" style="background:#111; padding:15px; margin-bottom:10px; border-left:3px solid #c9a961">
+                        Room ${h.roomNo} booked by <strong>${h.name}</strong> at ${h.time}
+                    </div>`;
+                });
+            } else if (tab === 'waiting') {
+                if (waitingList.length === 0) area.innerHTML = '<p style="color:#555">Waiting list is currently empty.</p>';
+                waitingList.forEach((w, i) => {
+                    area.innerHTML += `<div class="waiting-item" style="background:#111; padding:15px; margin-bottom:10px; border-left:3px solid #c9a961">
+                        Queue Position #${i+1}: <strong>${w.name}</strong> (Joined: ${w.time})
+                    </div>`;
+                });
+            }
+        }
+
+        window.onload = () => showTab(null, 'all');
+    </script>
+</body>
+</html>
